@@ -8,11 +8,10 @@ node
     {
         sh "./mvnw clean package"
     }
-    stage('Docker')
+    stage('tomcat deploy')
     {
-    sh "sudo service docker start"
-    sh "cd /home/ec2-user/.jenkins/workspace/jPetStore"
-    sh "sudo docker stop de0c496615f8"
-    sh "sudo docker run -d -p 8080:8080 jpetstore:6"
+        sh "sudo cp target/jpetstore.war /opt/apache-tomcat-8.0.53/webapps/"
+        sh "sudo /opt/apache-tomcat-8.0.53/bin/shutdown.sh"
+        sh "sudo /opt/apache-tomcat-8.0.53/bin/startup.sh"
     }
 }

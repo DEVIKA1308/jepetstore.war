@@ -1,0 +1,18 @@
+node 
+{
+    stage('checkout')
+    {
+        git 'https://github.com/mybatis/jpetstore-6.git'
+    }
+    stage('build')
+    {
+        sh "./mvnw clean package"
+    }
+    stage('Docker')
+    {
+    sh "sudo service docker start"
+    sh "cd /home/ec2-user/.jenkins/workspace/jPetStore"
+    sh "sudo docker stop de0c496615f8"
+    sh "sudo docker run -d -p 8080:8080 jpetstore:6"
+    }
+}
